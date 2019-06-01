@@ -1,17 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { createStore, compose, applyMiddleware } from "redux";
+import reducers from "./reducers";
 
-import App from './components/app';
-import reducers from './reducers';
+import { HashRouter as Router } from "react-router-dom";
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(reducers, composeEnhancer(applyMiddleware()));
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
-  </Provider>
-  , document.querySelector('#main'));
-
-//, document.querySelector('.container'));
+  <Provider store={store}>
+    <Router>
+      <div>Hello World</div>
+    </Router>
+  </Provider>,
+  document.querySelector("#main")
+);
